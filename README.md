@@ -24,3 +24,13 @@ sudo docker ps
 
 4.2) Iniciei o Container
 sudo docker start CONTAINER_ID
+
+#II) Criar o banco de dados "eventosapp"
+
+2.1) Entrar no container:
+
+sudo docker exec -it meu-mysql-container mysql -uroot -pmichelli14
+
+2.2) Criar o banco de dados:
+
+create database eventosapp;
