@@ -16,7 +16,7 @@ public class Convidado {
     private String nomeConvidado;
 
     @ManyToOne
-    private EventoModel evento;
+    private Evento evento;
 
     public String getRg() {
         return rg;
@@ -34,11 +34,11 @@ public class Convidado {
         this.rg = rg;
     }
 
-    public EventoModel getEvento() {
+    public Evento getEvento() {
         return evento;
     }
 
-    public void setEvento(EventoModel evento) {
+    public void setEvento(Evento evento) {
         this.evento = evento;
     }
 }

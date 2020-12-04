@@ -25,7 +25,7 @@ sudo docker ps
 4.2) Iniciei o Container
 sudo docker start CONTAINER_ID
 
-#II) Criar o banco de dados "eventosapp"
+# II) Criar o banco de dados "eventosapp"
 
 2.1) Entrar no container:
 

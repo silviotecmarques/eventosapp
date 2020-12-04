@@ -1,8 +1,8 @@
 package com.eventosapp.repositories;
 
-import com.eventosapp.models.EventoModel;
+import com.eventosapp.models.Evento;
 import org.springframework.data.repository.CrudRepository;
 
-public interface EventoRepository extends CrudRepository<EventoModel, Long>{
-    EventoModel findByCodigo(long codigo);
+public interface EventoRepository extends CrudRepository<Evento, Long>{
+    Evento findByCodigo(long codigo);
 }

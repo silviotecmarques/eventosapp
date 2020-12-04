@@ -5,8 +5,8 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name = "evento")
-public class EventoModel implements Serializable {
+@Entity
+public class Evento implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class EventoModel implements Serializable {
     @NotEmpty
     private String horario;
 
-    @OneToMany
+    @OneToMany(mappedBy = "evento", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Convidado> convidados;
 
     public long getCodigo() {

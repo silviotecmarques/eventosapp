@@ -1,7 +1,7 @@
 package com.eventosapp.controllers;
 
 import com.eventosapp.models.Convidado;
-import com.eventosapp.models.EventoModel;
+import com.eventosapp.models.Evento;
 import com.eventosapp.repositories.ConvidadoRepository;
 import com.eventosapp.repositories.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class EventoController<result> {
     @RequestMapping(value="/editarEvento/{codigo}", method=RequestMethod.GET)
     public ModelAndView editarEvento(@PathVariable("codigo") String codigo) {
 
-        EventoModel evento = er.findById(Long.parseLong(codigo)).get();
+        Evento evento = er.findById(Long.parseLong(codigo)).get();
 
         ModelAndView mv = new ModelAndView("evento/formEvento");
 
@@ -45,27 +45,27 @@ public class EventoController<result> {
     }
 
     @RequestMapping(value = "/cadastrarEvento", method=RequestMethod.POST)
-    public String form(@Valid EventoModel evento, BindingResult result, RedirectAttributes attributes){
+    public String form(@Valid Evento evento, BindingResult result, RedirectAttributes attributes){
        if (result.hasErrors()){
            attributes.addFlashAttribute("mensagem", "Verifique os Campos!");
-           return "redirect:/cadastrar/Evento";
+           return "redirect:/cadastrarEvento";
        }
         er.save(evento);
         attributes.addFlashAttribute("mensagem", "Eventos Cadastrados Com Sucesso!");
-        return "redirect:/cadastrar/Evento";
+        return "redirect:/cadastrarEvento";
     }
 
     @RequestMapping("/eventos")
     public ModelAndView listaEventos(){
         ModelAndView mv = new ModelAndView("index");
-        Iterable<EventoModel> eventos = er.findAll();
+        Iterable<Evento> eventos = er.findAll();
         mv.addObject("eventos", eventos);
         return mv;
     }
 
     @RequestMapping(value = "/{codigo}", method=RequestMethod. GET)
     public ModelAndView detalhesEvento(@PathVariable("codigo") long codigo){
-        EventoModel evento = er.findByCodigo(codigo);
+        Evento evento = er.findByCodigo(codigo);
         ModelAndView mv = new ModelAndView("evento/detalhesEvento");
         mv.addObject("evento", evento);
 
@@ -74,6 +74,13 @@ public class EventoController<result> {
 
         return mv;
     }
+    @RequestMapping("/deletarEvento")
+    public String deletarEvento(long codigo){
+        Evento evento = er.findByCodigo(codigo);
+        er.delete(evento);
+        return "redirect:/eventos";
+
+    }
 
     @RequestMapping(value = "/{codigo}", method=RequestMethod. POST)
     public String detalhesEventoPost(@PathVariable("codigo") long codigo, @Valid Convidado convidado, BindingResult result, RedirectAttributes attributes)  {
@@ -81,11 +88,22 @@ public class EventoController<result> {
             attributes.addFlashAttribute("mensagem", "Verifique Os Campos!");
             return "redirect:/{codigo}";
         }
-        EventoModel evento = er.findByCodigo(codigo);
+        Evento evento = er.findByCodigo(codigo);
         convidado.setEvento(evento);
         cr.save(convidado);
         attributes.addFlashAttribute("mensagem", "Convidado Adicionado Com Sucesso!");
         return "redirect:/{codigo}";
+    }
+
+    @RequestMapping("/deletarConvidado")
+    public String deletarConvidado(String rg){
+        Convidado convidado = cr.findByRg(rg);
+        cr.delete(convidado);
+
+        Evento evento = convidado.getEvento();
+        long codigolong = evento.getCodigo();
+        String codigo = "" + codigolong;
+        return "redirect:/" +codigo;
     }
 }
 
